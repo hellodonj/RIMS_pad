@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 描述: 搜索结果界面
+ * 描述: 病人患者搜索界面
  * 作者|时间: djj on 2018/2/26 13:15
  * 博客地址: http://www.jianshu.com/u/dfbde65a03fc
  */

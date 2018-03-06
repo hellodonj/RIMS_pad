@@ -5,4 +5,5 @@
     android:orientation="vertical">
 
     <include layout="@layout/activity_patient_list" />
+
 </LinearLayout>
