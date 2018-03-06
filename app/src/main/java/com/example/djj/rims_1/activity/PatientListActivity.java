@@ -38,6 +38,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 描述: 康复病人列表界面
+ * 作者|时间: djj on 2018/3/6 15:20
+ * 博客地址: http://www.jianshu.com/u/dfbde65a03fc
+ */
 public class PatientListActivity extends BaseActivity {
 
     @BindView(R.id.patient_list)
@@ -113,6 +118,8 @@ public class PatientListActivity extends BaseActivity {
         List<String> list = new ArrayList<String>();
         list.add("医院名称一");
         list.add("医院名称二");
+        list.add("医院名称三");
+        list.add("医院名称四");
         list.add("厦门弘爱医院");
         mHospitalAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, list);
         hospitalSpinner.setAdapter(mHospitalAdapter);
