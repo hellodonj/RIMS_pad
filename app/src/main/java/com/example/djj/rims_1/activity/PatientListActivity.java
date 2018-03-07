@@ -43,6 +43,7 @@ import butterknife.OnClick;
  * 作者|时间: djj on 2018/3/6 15:20
  * 博客地址: http://www.jianshu.com/u/dfbde65a03fc
  */
+
 public class PatientListActivity extends BaseActivity {
 
     @BindView(R.id.patient_list)
