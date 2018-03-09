@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -60,8 +59,6 @@ public class PatientListActivity extends BaseActivity {
     Spinner hospitalSpinner;
     @BindView(R.id.patient_area_spinner)
     Spinner patientAreaSpinner;
-    @BindView(R.id.btn_search)
-    Button btnSearch;
     private ArrayAdapter<String> mHospitalAdapter;
     private ArrayAdapter<String> mPatientAreaAdapter;
     private Context mContext = PatientListActivity.this;
@@ -176,16 +173,13 @@ public class PatientListActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.ibtn_left, R.id.ibtn_right, R.id.btn_search})
+    @OnClick({R.id.ibtn_left, R.id.ibtn_right})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ibtn_left:
                 finish();
                 break;
             case R.id.ibtn_right:
-                break;
-            case R.id.btn_search:
-                projectWebServer(2, 5);
                 break;
         }
     }

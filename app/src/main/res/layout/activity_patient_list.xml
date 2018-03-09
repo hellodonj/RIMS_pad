@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:layout_margin="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -50,11 +50,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_search"
-            android:text="搜索"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,9 +68,9 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableRight="@mipmap/button_search"
-            android:hint="扫码结果..."
+            android:hint="请输入患者姓名或者病区..."
             android:maxLines="1"
-            android:padding="3dp"
+            android:padding="6dp"
             android:textColorHint="#BBBBBB"
             android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="14sp" />
