@@ -16,6 +16,12 @@ public class PatientRequest {
     private int rowcount;
     //页码
     private int pagenum;
+    //医院代码
+    private String yydm;
+    //病区代码
+    private String bqdm;
+    //系统标志
+    private int xtbz;
 
     public String getId() {
         return id;
@@ -47,5 +53,29 @@ public class PatientRequest {
 
     public void setPagenum(int pagenum) {
         this.pagenum = pagenum;
+    }
+
+    public String getYydm() {
+        return yydm;
+    }
+
+    public void setYydm(String yydm) {
+        this.yydm = yydm;
+    }
+
+    public String getBqdm() {
+        return bqdm;
+    }
+
+    public void setBqdm(String bqdm) {
+        this.bqdm = bqdm;
+    }
+
+    public int getXtbz() {
+        return xtbz;
+    }
+
+    public void setXtbz(int xtbz) {
+        this.xtbz = xtbz;
     }
 }

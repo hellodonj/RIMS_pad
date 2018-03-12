@@ -46,7 +46,7 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
         //绑定数据
         PatientResponse patientResponse = mPatientList.get(position);
         holder.patientName.setText(patientResponse.getHzxm());
-        holder.patientAge.setText(patientResponse.getHznl() + "/");
+        holder.patientAge.setText(patientResponse.getHznl() + "岁/");
         holder.patientSex.setText(patientResponse.getXb());
         holder.patientNum.setText(patientResponse.getBqmc());
         holder.patientDiagnosis.setText(patientResponse.getZdmc());

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import com.chaychan.viewlib.PowerfulEditText;
 import com.example.djj.rims_1.R;
 import com.example.djj.rims_1.adapter.PatientAdapter;
+import com.example.djj.rims_1.bean.HospitalResponse;
 import com.example.djj.rims_1.bean.PatientRequest;
 import com.example.djj.rims_1.bean.PatientResponse;
 import com.example.djj.rims_1.utiles.DateUtil;
@@ -69,7 +69,8 @@ public class PatientListActivity extends BaseActivity {
     String id = SharedPreferencesHelper.getInstance().getData("id", "").toString();
     String url = SharedPreferencesHelper.getInstance().getData("url", "").toString();
     final int pageSize = 20; // 固定大小
-    int startIndex = 1;  // 起始页（从1开始）
+    int startIndex = 0;  // 起始页（从1开始）
+    private List<HospitalResponse> mHospitalList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class PatientListActivity extends BaseActivity {
 
         initData();
 
-        projectWebServer(1, 20);
+        projectWebServer(0, 20);
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(PatientListActivity.this, DividerItemDecoration.VERTICAL));
         mLayoutManger = new LinearLayoutManager(PatientListActivity.this);
@@ -119,6 +120,29 @@ public class PatientListActivity extends BaseActivity {
         list.add("医院名称三");
         list.add("医院名称四");
         list.add("厦门弘爱医院");
+//        showDialog("", "加载中...");
+//        String METHOD_NAME = "IN2";
+//        WebServiceUtils.callWebService(url, METHOD_NAME, "", new WebServiceUtils.WebServiceCallBack() {
+//            @Override
+//            public void callBack(SoapPrimitive result) {
+//                dismissDialog();
+//                String results = result.toString();
+//                if (result.toString().equals("[]")) {
+//                    Toast.makeText(PatientListActivity.this, "无数据......", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Logger.json(results);
+//                    mHospitalList = JsonUtils.fromJson(results, new TypeToken<List<PatientResponse>>() {
+//                    }.getType());
+//                    if (mHospitalList != null && mHospitalList.size() > 1) {
+//                        mHospitalAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, mHospitalList);
+//                        hospitalSpinner.setAdapter(mHospitalAdapter);
+//
+//                        temporaryResponses.addAll(mPatientList);
+//                        mPatientAdapter.setPatientData(temporaryResponses);
+//                    }
+//                }
+//            }
+//        });
         mHospitalAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, list);
         hospitalSpinner.setAdapter(mHospitalAdapter);
 
@@ -144,21 +168,21 @@ public class PatientListActivity extends BaseActivity {
         request.setYyrq(dateNowStr);//dateNowStr "20170502"
         request.setRowcount(pageSize);
         request.setPagenum(startIndex);
+        request.setYydm("42504942410");
+        request.setBqdm("00");
+        request.setXtbz(1);
         patientList.add(request);
         String param = JsonUtils.toJson(patientList);
         showDialog("", "加载中...");
-        String METHOD_NAME = "IN14";
+        String METHOD_NAME = "IN03_1";
         WebServiceUtils.callWebService(url, METHOD_NAME, param, new WebServiceUtils.WebServiceCallBack() {
             @Override
             public void callBack(SoapPrimitive result) {
                 dismissDialog();
-                String results = null;
-                try {
-                    results = result.toString();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (!TextUtils.isEmpty(results)) {
+                String results = result.toString();
+                if (results.equals("[]")) {
+                    Toast.makeText(PatientListActivity.this, "无数据......", Toast.LENGTH_SHORT).show();
+                } else {
                     Logger.json(results);
                     mPatientList = JsonUtils.fromJson(results, new TypeToken<List<PatientResponse>>() {
                     }.getType());
@@ -166,8 +190,6 @@ public class PatientListActivity extends BaseActivity {
                         temporaryResponses.addAll(mPatientList);
                         mPatientAdapter.setPatientData(temporaryResponses);
                     }
-                } else {
-                    Toast.makeText(PatientListActivity.this, "无数据......", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -183,6 +205,4 @@ public class PatientListActivity extends BaseActivity {
                 break;
         }
     }
-
-
 }
