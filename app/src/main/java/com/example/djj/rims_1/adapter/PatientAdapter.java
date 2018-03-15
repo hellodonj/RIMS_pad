@@ -46,10 +46,15 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
         //绑定数据
         PatientResponse patientResponse = mPatientList.get(position);
         holder.patientName.setText(patientResponse.getHzxm());
+        holder.patientStatus.setVisibility(View.VISIBLE);
         holder.patientAge.setText(patientResponse.getHznl() + "岁/");
         holder.patientSex.setText(patientResponse.getXb());
-        holder.patientNum.setText(patientResponse.getBqmc());
-        holder.patientDiagnosis.setText(patientResponse.getZdmc());
+        holder.patientBed.setText(patientResponse.getCwdm() + "床");
+        holder.patientArea.setText(patientResponse.getBqmc());
+        holder.patientDiagnosis.setText("诊断："+patientResponse.getZdmc());
+        holder.patientCost.setText("新农合");
+        holder.patientTime.setText("2018-3-15");
+        holder.attendDoctor.setText("张伟");
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickListener != null) {
@@ -75,18 +80,28 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
 
 
         public TextView patientName;
+        public TextView patientStatus;
         public TextView patientAge;
         public TextView patientSex;
-        public TextView patientNum;
+        public TextView patientBed;
+        public TextView patientArea;
+        public TextView patientCost;       //费用类别
+        public TextView patientTime;
         public TextView patientDiagnosis;  //诊断信息
+        public TextView attendDoctor;      //主治医师
 
         public MyViewHolder(View itemView) {
             super(itemView);
             patientName = itemView.findViewById(R.id.patient_name);
+            patientStatus = itemView.findViewById(R.id.patient_status);
             patientAge = itemView.findViewById(R.id.patient_age);
             patientSex = itemView.findViewById(R.id.patient_sex);
-            patientNum = itemView.findViewById(R.id.patient_num);
+            patientBed = itemView.findViewById(R.id.patient_bed);
+            patientArea = itemView.findViewById(R.id.patient_area);
+            patientCost = itemView.findViewById(R.id.patient_cost_category);
+            patientTime = itemView.findViewById(R.id.patient_time);
             patientDiagnosis = itemView.findViewById(R.id.patient_diagnosis);
+            attendDoctor = itemView.findViewById(R.id.attend_doctor);
         }
     }
 

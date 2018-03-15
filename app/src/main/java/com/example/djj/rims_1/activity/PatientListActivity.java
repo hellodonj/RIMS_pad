@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -59,7 +60,9 @@ public class PatientListActivity extends BaseActivity {
     Spinner hospitalSpinner;
     @BindView(R.id.patient_area_spinner)
     Spinner patientAreaSpinner;
-    private ArrayAdapter<String> mHospitalAdapter;
+    @BindView(R.id.patient_type_spinner)
+    Spinner patientTypeSpinner;
+    private ArrayAdapter<String> mStatusAdapter;
     private ArrayAdapter<String> mPatientAreaAdapter;
     private Context mContext = PatientListActivity.this;
     private PatientAdapter mPatientAdapter;
@@ -70,7 +73,9 @@ public class PatientListActivity extends BaseActivity {
     String url = SharedPreferencesHelper.getInstance().getData("url", "").toString();
     final int pageSize = 20; // 固定大小
     int startIndex = 0;  // 起始页（从1开始）
-    private List<HospitalResponse> mHospitalList;
+    private List<String> mHospitalList;
+    private List<HospitalResponse> hospitalList;
+    private ArrayAdapter mArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +84,50 @@ public class PatientListActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         initData();
+        String METHOD_NAME = "IN02";
+        WebServiceUtils.callWebService(url, METHOD_NAME, "", new WebServiceUtils.WebServiceCallBack() {
+            @Override
+            public void callBack(SoapPrimitive result) {
+                if (result.toString().equals("[]")) {
+                    Toast.makeText(PatientListActivity.this, "无医院名称！", Toast.LENGTH_SHORT).show();
+                } else {
+                    String results = result.toString();
+                    mHospitalList = new ArrayList<String>();
+                    Logger.json(results);
+                    hospitalList = JsonUtils.fromJson(results, new TypeToken<List<HospitalResponse>>() {
+                    }.getType());
+                    if (hospitalList != null && hospitalList.size() > 0) {
+                        for (int i = 0; i < hospitalList.size(); i++) {
+                            HospitalResponse hospital = hospitalList.get(i);
+                            mHospitalList.add(hospital.getYymc());
+                        }
+                        mArrayAdapter = new ArrayAdapter(PatientListActivity.this, android.R.layout.simple_spinner_item, mHospitalList);
+                        //设置下拉菜单的样式
+                        mArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        // 4. 为Spinner加载适配器
+                        hospitalSpinner.setAdapter(mArrayAdapter);
+                        hospitalSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                HospitalResponse hospital = hospitalList.get(position);
+                                //缓存登录数据到本地
+                                SharedPreferencesHelper.getInstance().saveData("yydm", hospital.getYydm());
+                                //设置数据源
+                                projectWebServer();
+                            }
 
-        projectWebServer(0, 20);
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
+        projectWebServer();
 
         mRecyclerView.addItemDecoration(new DividerItemDecoration(PatientListActivity.this, DividerItemDecoration.VERTICAL));
         mLayoutManger = new LinearLayoutManager(PatientListActivity.this);
@@ -115,36 +162,11 @@ public class PatientListActivity extends BaseActivity {
         ibtnLeft.setImageResource(R.mipmap.ic_back);
         ibtnRight.setVisibility(View.GONE);
         List<String> list = new ArrayList<String>();
-        list.add("医院名称一");
-        list.add("医院名称二");
-        list.add("医院名称三");
-        list.add("医院名称四");
-        list.add("厦门弘爱医院");
-//        showDialog("", "加载中...");
-//        String METHOD_NAME = "IN2";
-//        WebServiceUtils.callWebService(url, METHOD_NAME, "", new WebServiceUtils.WebServiceCallBack() {
-//            @Override
-//            public void callBack(SoapPrimitive result) {
-//                dismissDialog();
-//                String results = result.toString();
-//                if (result.toString().equals("[]")) {
-//                    Toast.makeText(PatientListActivity.this, "无数据......", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Logger.json(results);
-//                    mHospitalList = JsonUtils.fromJson(results, new TypeToken<List<PatientResponse>>() {
-//                    }.getType());
-//                    if (mHospitalList != null && mHospitalList.size() > 1) {
-//                        mHospitalAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, mHospitalList);
-//                        hospitalSpinner.setAdapter(mHospitalAdapter);
-//
-//                        temporaryResponses.addAll(mPatientList);
-//                        mPatientAdapter.setPatientData(temporaryResponses);
-//                    }
-//                }
-//            }
-//        });
-        mHospitalAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, list);
-        hospitalSpinner.setAdapter(mHospitalAdapter);
+        list.add("全部");
+        list.add("会诊");
+        list.add("普通");
+        mStatusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, list);
+        patientTypeSpinner.setAdapter(mStatusAdapter);
 
         List<String> list1 = new ArrayList<String>();
         list1.add("病区一");
@@ -158,17 +180,18 @@ public class PatientListActivity extends BaseActivity {
 
     }
 
-    private void projectWebServer(int startIndex, int pageSize) {
+    private void projectWebServer() {
         //获取当前年月日
         Date date = new Date();
         String dateNowStr = DateUtil.getCurrentDateFormat(date);
+        String yydm = SharedPreferencesHelper.getInstance().getData("yydm","").toString();
         List<PatientRequest> patientList = new ArrayList<PatientRequest>();
         final PatientRequest request = new PatientRequest();
         request.setId(id);
         request.setYyrq(dateNowStr);//dateNowStr "20170502"
         request.setRowcount(pageSize);
         request.setPagenum(startIndex);
-        request.setYydm("42504942410");
+        request.setYydm(yydm);
         request.setBqdm("00");
         request.setXtbz(1);
         patientList.add(request);
