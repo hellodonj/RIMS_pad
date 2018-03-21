@@ -49,7 +49,6 @@ public class SharedPreferencesHelper {
      */
     public String saveData(String key, Object data) {
         String type = data.getClass().getSimpleName();
-
         SharedPreferences.Editor editor = mSharedPreferences.edit();
 
         if ("Integer".equals(type)) {

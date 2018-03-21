@@ -109,7 +109,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (!url.equals("")) {
             if (!account.equals("")) { //&& !password.equals("")
                 showDialog("", "登录中...");
-                String METHOD_NAME = "IN1";
+                String METHOD_NAME = "IN1_GETURL";
                 WebServiceUtils.callWebService(url, METHOD_NAME, param, new WebServiceUtils.WebServiceCallBack() {
                     @Override
                     public void callBack(SoapPrimitive result) {
@@ -130,6 +130,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     SharedPreferencesHelper.getInstance().saveData("password", user.getPassword());
                                     SharedPreferencesHelper.getInstance().saveData("name", user.getName());
                                     SharedPreferencesHelper.getInstance().saveData("area", user.getKsmc());
+                                    SharedPreferencesHelper.getInstance().saveData("bsUrl", user.getUrl());
+                                    SharedPreferencesHelper.getInstance().saveData("ksdm", user.getKsdm());
                                     if (account.equals(user.getId()) && password.equals(user.getPassword())) {
                                         isLogin = true;
                                         break;
@@ -138,6 +140,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 if (isLogin) {
                                     Intent intent = new Intent(LoginActivity.this, PatientListActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 } else {
                                     //登录失败的提示
                                     Toast.makeText(mContext, "登录错误！ 错误的密码或用户名。", Toast.LENGTH_SHORT).show();

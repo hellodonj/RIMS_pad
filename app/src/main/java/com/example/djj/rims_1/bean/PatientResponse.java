@@ -93,6 +93,14 @@ public class PatientResponse {
     private String sbbz;
     //诊断
     private String zdmc;
+    //会诊标志
+    private String hzbz;
+    //费用类别
+    private String fylb;
+    //入院日期
+    private String ryrq;
+    //主治医师
+    private String zzysmc;
 
     public int getXh() {
         return xh;
@@ -436,5 +444,37 @@ public class PatientResponse {
 
     public void setZdmc(String zdmc) {
         this.zdmc = zdmc;
+    }
+
+    public String getFylb() {
+        return fylb;
+    }
+
+    public void setFylb(String fylb) {
+        this.fylb = fylb;
+    }
+
+    public String getRyrq() {
+        return ryrq;
+    }
+
+    public void setRyrq(String ryrq) {
+        this.ryrq = ryrq;
+    }
+
+    public String getHzbz() {
+        return hzbz;
+    }
+
+    public void setHzbz(String hzbz) {
+        this.hzbz = hzbz;
+    }
+
+    public String getZzysmc() {
+        return zzysmc;
+    }
+
+    public void setZzysmc(String zzysmc) {
+        this.zzysmc = zzysmc;
     }
 }

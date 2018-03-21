@@ -21,6 +21,7 @@ public class ResponseUser {
     private String regist_time;
     private String ksdm;
     private String ksmc;
+    private String url;
 
     public String getId() {
         return id;
@@ -70,6 +71,14 @@ public class ResponseUser {
         this.ksmc = ksmc;
     }
 
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     @Override
     public String toString() {

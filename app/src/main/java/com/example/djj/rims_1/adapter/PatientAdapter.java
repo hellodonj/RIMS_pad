@@ -47,14 +47,19 @@ public class PatientAdapter extends RecyclerView.Adapter<PatientAdapter.MyViewHo
         PatientResponse patientResponse = mPatientList.get(position);
         holder.patientName.setText(patientResponse.getHzxm());
         holder.patientStatus.setVisibility(View.VISIBLE);
-        holder.patientAge.setText(patientResponse.getHznl() + "岁/");
+        holder.patientAge.setText(patientResponse.getHznl() + "岁");
         holder.patientSex.setText(patientResponse.getXb());
         holder.patientBed.setText(patientResponse.getCwdm() + "床");
         holder.patientArea.setText(patientResponse.getBqmc());
-        holder.patientDiagnosis.setText("诊断："+patientResponse.getZdmc());
-        holder.patientCost.setText("新农合");
-        holder.patientTime.setText("2018-3-15");
-        holder.attendDoctor.setText("张伟");
+        holder.patientDiagnosis.setText(patientResponse.getZdmc());
+        holder.patientCost.setText(patientResponse.getFylb());
+        holder.patientTime.setText("2018-3-18");//patientResponse.getRyrq()
+        holder.attendDoctor.setText(patientResponse.getZzysmc());
+        if (patientResponse.getHzbz().equals("会诊")) {
+            holder.patientStatus.setVisibility(View.VISIBLE);
+        } else if (patientResponse.getHzbz().equals("普通")) {
+            holder.patientStatus.setVisibility(View.GONE);
+        }
 
         // 如果设置了回调，则设置点击事件
         if (mOnItemClickListener != null) {
